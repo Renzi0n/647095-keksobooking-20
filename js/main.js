@@ -11,9 +11,9 @@ var PHOTOS_ADDRESSES = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 
-var map = document.querySelector('.map');
-var mapPins = document.querySelector('.map__pins');
-var mapPinTemplate = document.querySelector('#pin')
+var mapNode = document.querySelector('.map');
+var mapPinsNode = document.querySelector('.map__pins');
+var mapPinTemplateNode = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
 var fragment = document.createDocumentFragment();
@@ -29,9 +29,10 @@ var getRandomElementOfArr = function (arr) {
 };
 
 var getRandomLengthArr = function (arr) {
-  arr.length = getRandomNumber(1, arr.length);
+  var newArr = arr.slice();
+  newArr.length = getRandomNumber(1, arr.length);
 
-  return arr;
+  return newArr;
 };
 
 var getAdObj = function (i) {
@@ -41,7 +42,7 @@ var getAdObj = function (i) {
     },
     offer: {
       title: 'Заголовок',
-      address: '{{location.x}}, {{location.y}}',
+      address: getRandomNumber(0, MAP_WIDTH) + ', ' + getRandomNumber(130, 630),
       price: getRandomNumber(10000, 50000),
       type: getRandomElementOfArr(TYPES_OF_ROOM),
       rooms: getRandomNumber(1, 5),
@@ -68,27 +69,27 @@ var getAdObjectsArr = function () {
   return adObjectsArr;
 };
 
-var renderMapPin = function (template, ad, i) {
+var renderMapPin = function (template, ad) {
   var mapElement = template.cloneNode(true);
   var mapElementImg = mapElement.querySelector('img');
 
-  mapElementImg.src = ad[i].author.avatar;
-  mapElementImg.alt = ad[i].offer.title;
+  mapElementImg.src = ad.author.avatar;
+  mapElementImg.alt = ad.offer.title;
 
-  mapElement.style.left = ad[i].location.x - (mapElementImg.width / 2) + 'px';
-  mapElement.style.top = ad[i].location.y - mapElementImg.height + 'px';
-
+  mapElement.style.left = ad.location.x - (mapElementImg.width / 2) + 'px';
+  mapElement.style.top = ad.location.y - mapElementImg.height + 'px';
   return mapElement;
 };
 
 
 var adObjectsArr = getAdObjectsArr();
 
-
 for (var i = 0; i < adObjectsArr.length; i++) {
-  fragment.appendChild(renderMapPin(mapPinTemplate, adObjectsArr, i));
+  var adObjectsArrItem = adObjectsArr[i];
+
+  fragment.appendChild(renderMapPin(mapPinTemplateNode, adObjectsArrItem));
 }
 
-mapPins.appendChild(fragment);
+mapPinsNode.appendChild(fragment);
 
-map.classList.remove('map--faded');
+mapNode.classList.remove('map--faded');
