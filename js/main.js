@@ -29,10 +29,7 @@ var getRandomElementOfArr = function (arr) {
 };
 
 var getRandomLengthArr = function (arr) {
-  var newArr = arr.slice();
-  newArr.length = getRandomNumber(1, arr.length);
-
-  return newArr;
+  return arr.slice(0, getRandomNumber(1, arr.length));
 };
 
 var getAdObj = function (i) {
