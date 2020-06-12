@@ -110,13 +110,25 @@ var renderMapPin = function (template, ad) {
   return mapElement;
 };
 
-var lockForms = function (isDisable) {
+var getAddressMapPinMainStr = function (isDisable) {
+  var сalculatedX = parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN_SIZES.active.width / 2;
+  var сalculatedHeight = isDisable ? MAIN_PIN_SIZES.active.height / 2 : MAIN_PIN_SIZES.active.height;
+  var сalculatedY = parseInt(mapPinMainNode.style.top, 10) + сalculatedHeight;
+
+  return Math.round(сalculatedX) + ', ' + Math.round(сalculatedY);
+};
+
+var toggleDisabledOnFormNodes = function (isDisable) {
+  var pointerEventsValue = isDisable === true ? 'none' : 'auto';
+
   for (var i = 0; i < formFieldsNodes.length; i++) {
     formFieldsNodes[i].disabled = isDisable;
+    formFieldsNodes[i].style.pointerEvents = pointerEventsValue;
   }
 
   for (i = 0; i < mapFiltersNodes.length; i++) {
     mapFiltersNodes[i].disabled = isDisable;
+    mapFiltersNodes[i].style.pointerEvents = pointerEventsValue;
   }
 };
 
@@ -129,62 +141,34 @@ var unlockPage = function (evt) {
     }
     mapPinsNode.appendChild(fragment);
 
-    lockForms(false);
+    toggleDisabledOnFormNodes(false);
     mapNode.classList.remove('map--faded');
     formNode.classList.remove('ad-form--disabled');
 
-    addressInputNode.value = Math.round((parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN_SIZES.active.width / 2)) + ', '
-      + Math.round((parseInt(mapPinMainNode.style.top, 10) + MAIN_PIN_SIZES.active.height));
+    addressInputNode.value = getAddressMapPinMainStr(false);
 
     mapPinMainNode.removeEventListener('mousedown', unlockPage);
     mapPinMainNode.removeEventListener('keydown', unlockPage);
   }
 };
 
-var getSelectedOptionValue = function (selectNode) {
-  for (var i = 0; i < selectNode.options.length; i++) {
-    if (selectNode.options[i].selected) {
-      var selectedOption = selectNode.options[i];
-    }
-  }
+var validateGuestsSelect = function () {
+  var validMessage = ROOMS_FOR_GUESTS_MAP[roomsSelectNode.value].includes(guestsSelectNode.value) === true ? '' : 'Такой вариант не подходит!';
 
-  return selectedOption.value;
-};
-
-var validateGuestsSelect = function (selectedRoomsValue, selectedGuestsValue) {
-  if (ROOMS_FOR_GUESTS_MAP[String(selectedRoomsValue)].includes(String(selectedGuestsValue))) {
-    guestsSelectNode.setCustomValidity('');
-  } else {
-    guestsSelectNode.setCustomValidity('Такой вариант не подходит!');
-  }
+  guestsSelectNode.setCustomValidity(validMessage);
 };
 
 
 var adObjectsArr = getAdObjectsArr();
 
-var selectedGuestsValue = getSelectedOptionValue(guestsSelectNode);
-var selectedRoomsValue = getSelectedOptionValue(roomsSelectNode);
+
+validateGuestsSelect();
+roomsSelectNode.addEventListener('change', validateGuestsSelect);
+guestsSelectNode.addEventListener('change', validateGuestsSelect);
 
 
-validateGuestsSelect(selectedRoomsValue, selectedGuestsValue);
-
-roomsSelectNode.addEventListener('change', function (evt) {
-  selectedRoomsValue = evt.target.value;
-  selectedGuestsValue = getSelectedOptionValue(guestsSelectNode);
-
-  validateGuestsSelect(selectedRoomsValue, selectedGuestsValue);
-});
-
-guestsSelectNode.addEventListener('change', function (evt) {
-  selectedGuestsValue = evt.target.value;
-  selectedRoomsValue = getSelectedOptionValue(roomsSelectNode);
-
-  validateGuestsSelect(selectedRoomsValue, selectedGuestsValue);
-});
-
-lockForms(true);
-addressInputNode.value = Math.round((parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN_SIZES.inactive.width / 2)) + ', '
-  + Math.round((parseInt(mapPinMainNode.style.top, 10) + MAIN_PIN_SIZES.inactive.height / 2));
+toggleDisabledOnFormNodes(true);
+addressInputNode.value = getAddressMapPinMainStr(true);
 
 mapPinMainNode.addEventListener('mousedown', unlockPage);
 mapPinMainNode.addEventListener('keydown', unlockPage);
