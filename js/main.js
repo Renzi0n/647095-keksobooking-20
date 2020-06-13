@@ -9,10 +9,22 @@ var PHOTOS_ADDRESSES = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var TYPES_MAP = {
-  'palace': 'Дворец',
-  'flat': 'Комната',
-  'house': 'Дом',
-  'bungalo': 'Бунгало'
+  'palace': {
+    name: 'Дворец',
+    minPrice: '10000'
+  },
+  'flat': {
+    name: 'Комната',
+    minPrice: '1000'
+  },
+  'house': {
+    name: 'Дом',
+    minPrice: '5000'
+  },
+  'bungalo': {
+    name: 'Бунгало',
+    minPrice: '0'
+  }
 };
 var MAIN_PIN_SIZES = {
   active: {
@@ -48,6 +60,10 @@ var addressInputNode = formNode.querySelector('#address');
 var mapFiltersNodes = document.querySelector('.map__filters').children;
 var roomsSelectNode = document.querySelector('#room_number');
 var guestsSelectNode = document.querySelector('#capacity');
+var typeSelectNode = document.querySelector('#type');
+var priceInputNode = document.querySelector('#price');
+var timeInSelectNode = document.querySelector('#timein');
+var timeOutSelectNode = document.querySelector('#timeout');
 
 var isDisable = true;
 var popupNode;
@@ -129,7 +145,7 @@ var renderPopup = function (template, ad) {
   popupElement.querySelector('.popup__title').textContent = ad.offer.title;
   popupElement.querySelector('.popup__text--address').textContent = ad.offer.address;
   popupElement.querySelector('.popup__text--price').textContent = ad.offer.price + ' ₽/ночь';
-  popupElement.querySelector('.popup__type').textContent = TYPES_MAP[ad.offer.type];
+  popupElement.querySelector('.popup__type').textContent = TYPES_MAP[ad.offer.type].name;
   popupElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
   popupElement.querySelector('.popup__description').textContent = ad.offer.description;
 
@@ -247,6 +263,19 @@ var validateGuestsSelect = function () {
   guestsSelectNode.setCustomValidity(customValidityMessage);
 };
 
+var validatePriceInput = function () {
+  priceInputNode.placeholder = TYPES_MAP[typeSelectNode.value].minPrice;
+  priceInputNode.min = TYPES_MAP[typeSelectNode.value].minPrice;
+};
+
+var validateTimeSelects = function (evt) {
+  if (evt.target === timeInSelectNode) {
+    timeOutSelectNode.value = timeInSelectNode.value;
+  } else {
+    timeInSelectNode.value = timeOutSelectNode.value;
+  }
+};
+
 
 var adObjectsArr = getAdObjectsArr();
 
@@ -254,6 +283,12 @@ var adObjectsArr = getAdObjectsArr();
 validateGuestsSelect();
 roomsSelectNode.addEventListener('change', validateGuestsSelect);
 guestsSelectNode.addEventListener('change', validateGuestsSelect);
+
+validatePriceInput();
+typeSelectNode.addEventListener('change', validatePriceInput);
+
+timeInSelectNode.addEventListener('change', validateTimeSelects);
+timeOutSelectNode.addEventListener('change', validateTimeSelects);
 
 
 toggleDisabledOnFormNodes();
