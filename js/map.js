@@ -27,7 +27,7 @@
 
     getAddressMapPinMainStr: function () {
       var сalculatedX = parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN_SIZES.active.width / 2;
-      var сalculatedHeight = window.isPageDisabled ? MAIN_PIN_SIZES.active.height / 2 : MAIN_PIN_SIZES.active.height;
+      var сalculatedHeight = window.util.isPageDisabled ? MAIN_PIN_SIZES.active.height / 2 : MAIN_PIN_SIZES.active.height;
       var сalculatedY = parseInt(mapPinMainNode.style.top, 10) + сalculatedHeight;
 
       return Math.round(сalculatedX) + ', ' + Math.round(сalculatedY);

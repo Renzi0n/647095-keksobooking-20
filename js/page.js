@@ -4,26 +4,24 @@
 
   var fragment = document.createDocumentFragment();
 
-  window.isPageDisabled = true;
-
 
   var toggleDisabledOnFormNodes = function () {
-    var pointerEventsValue = window.isPageDisabled ? 'none' : 'auto';
+    var pointerEventsValue = window.util.isPageDisabled ? 'none' : 'auto';
 
     for (var i = 0; i < window.form.formFieldsNodes.length; i++) {
-      window.form.formFieldsNodes[i].disabled = window.isPageDisabled;
+      window.form.formFieldsNodes[i].disabled = window.util.isPageDisabled;
       window.form.formFieldsNodes[i].style.pointerEvents = pointerEventsValue;
     }
 
     for (i = 0; i < window.map.mapFiltersNodes.length; i++) {
-      window.map.mapFiltersNodes[i].disabled = window.isPageDisabled;
+      window.map.mapFiltersNodes[i].disabled = window.util.isPageDisabled;
       window.map.mapFiltersNodes[i].style.pointerEvents = pointerEventsValue;
     }
   };
 
   var unlockPage = function (evt) {
     if (evt.button === 0 || evt.key === 'Enter') {
-      window.isPageDisabled = false;
+      window.util.isPageDisabled = false;
 
       for (var i = 0; i < window.data.adObjectsArr.length; i++) {
         var adObjectsArrItem = window.data.adObjectsArr[i];

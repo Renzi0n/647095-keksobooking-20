@@ -3,6 +3,7 @@
 (function () {
 
   window.util = {
+    isPageDisabled: true,
     TYPES_MAP: {
       'palace': {
         name: 'Дворец',
