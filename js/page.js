@@ -36,6 +36,9 @@
 
       window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
 
+      window.move(evt);
+      window.map.mapPinMainNode.addEventListener('mousedown', window.move);
+
       window.map.mapPinMainNode.removeEventListener('mousedown', unlockPage);
       window.map.mapPinMainNode.removeEventListener('keydown', unlockPage);
     }

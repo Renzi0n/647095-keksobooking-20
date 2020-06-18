@@ -3,7 +3,6 @@
 (function () {
 
   var NUMBER_OF_ADS = 8;
-  var MAP_WIDTH = 1200;
   var CHECKIN_HOURS = ['12:00', '13:00', '14:00'];
   var CHECKOUT_HOURS = ['12:00', '13:00', '14:00'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -19,7 +18,7 @@
       },
       offer: {
         title: 'Заголовок',
-        address: window.util.getRandomNumber(0, MAP_WIDTH) + ', ' + window.util.getRandomNumber(130, 630),
+        address: window.util.getRandomNumber(0, window.map.MAP_WIDTH) + ', ' + window.util.getRandomNumber(130, 630),
         price: window.util.getRandomNumber(10000, 50000),
         type: window.util.getRandomElementOfArr(Object.keys(window.util.TYPES_MAP)),
         rooms: window.util.getRandomNumber(1, 5),
@@ -31,7 +30,7 @@
         photos: window.util.getRandomLengthArr(PHOTOS_ADDRESSES)
       },
       location: {
-        x: window.util.getRandomNumber(0, MAP_WIDTH),
+        x: window.util.getRandomNumber(0, window.map.MAP_WIDTH),
         y: window.util.getRandomNumber(130, 630)
       }
     };
