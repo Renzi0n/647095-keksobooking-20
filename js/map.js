@@ -12,7 +12,11 @@
       height: 65
     }
   };
-  var MAP_WIDTH = 1200;
+  var MAP_SIZES = {
+    width: 1200,
+    coordStart: 130,
+    coordEnd: 630
+  };
 
   var mapNode = document.querySelector('.map');
   var mapPinsNode = mapNode.querySelector('.map__pins');
@@ -26,7 +30,7 @@
     mapPinMainNode: mapPinMainNode,
     mapFiltersNodes: mapFiltersNodes,
     MAIN_PIN_SIZES: MAIN_PIN_SIZES,
-    MAP_WIDTH: MAP_WIDTH,
+    MAP_SIZES: MAP_SIZES,
 
     getAddressMapPinMainStr: function () {
       var сalculatedX = parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN_SIZES.active.width / 2;

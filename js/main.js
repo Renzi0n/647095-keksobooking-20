@@ -1,7 +1,7 @@
 'use strict';
 
 var NUMBER_OF_ADS = 8;
-var MAP_WIDTH = 1200;
+var MAP_SIZES.width = 1200;
 var CHECKIN_HOURS = ['12:00', '13:00', '14:00'];
 var CHECKOUT_HOURS = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -81,7 +81,7 @@ var getAdObj = function (i) {
     },
     offer: {
       title: 'Заголовок',
-      address: getRandomNumber(0, MAP_WIDTH) + ', ' + getRandomNumber(130, 630),
+      address: getRandomNumber(0, MAP_SIZES.width) + ', ' + getRandomNumber(130, 630),
       price: getRandomNumber(10000, 50000),
       type: getRandomElementOfArr(Object.keys(TYPES_MAP)),
       rooms: getRandomNumber(1, 5),
@@ -93,7 +93,7 @@ var getAdObj = function (i) {
       photos: getRandomLengthArr(PHOTOS_ADDRESSES)
     },
     location: {
-      x: getRandomNumber(0, MAP_WIDTH),
+      x: getRandomNumber(0, MAP_SIZES.width),
       y: getRandomNumber(130, 630)
     }
   };
