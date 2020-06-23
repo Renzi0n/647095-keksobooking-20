@@ -20,28 +20,39 @@
   };
 
   var unlockPage = function (evt) {
-    if (evt.button === 0 || evt.key === 'Enter') {
-      window.util.isPageDisabled = false;
+    var onDataLoad = function (adObjectsArr) {
+      adObjectsArr[1].offer.features = undefined;
+      if (evt.button === 0 || evt.key === 'Enter') {
+        window.util.isPageDisabled = false;
 
-      for (var i = 0; i < window.data.adObjectsArr.length; i++) {
-        var adObjectsArrItem = window.data.adObjectsArr[i];
+        for (var i = 0; i < adObjectsArr.length; i++) {
+          var adObjectsArrItem = adObjectsArr[i];
 
-        fragment.appendChild(window.pin.renderMapPin(adObjectsArrItem));
+          if (Object.keys(adObjectsArrItem).includes('offer')) {
+            fragment.appendChild(window.pin.renderMapPin(adObjectsArrItem));
+          }
+        }
+        window.map.mapPinsNode.appendChild(fragment);
+
+        toggleDisabledOnFormNodes();
+        window.map.mapNode.classList.remove('map--faded');
+        window.form.formNode.classList.remove('ad-form--disabled');
+
+        window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
+
+        window.move(evt);
+        window.map.mapPinMainNode.addEventListener('mousedown', window.move);
+
+        window.map.mapPinMainNode.removeEventListener('mousedown', unlockPage);
+        window.map.mapPinMainNode.removeEventListener('keydown', unlockPage);
       }
-      window.map.mapPinsNode.appendChild(fragment);
+    };
 
-      toggleDisabledOnFormNodes();
-      window.map.mapNode.classList.remove('map--faded');
-      window.form.formNode.classList.remove('ad-form--disabled');
+    var onDataError = function (message) {
+      throw new Error(message);
+    };
 
-      window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
-
-      window.move(evt);
-      window.map.mapPinMainNode.addEventListener('mousedown', window.move);
-
-      window.map.mapPinMainNode.removeEventListener('mousedown', unlockPage);
-      window.map.mapPinMainNode.removeEventListener('keydown', unlockPage);
-    }
+    window.backend.load(onDataLoad, onDataError);
   };
 
   window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
