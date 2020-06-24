@@ -17,35 +17,35 @@
       popupElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
       popupElement.querySelector('.popup__text--capacity').textContent = window.form.getDeclForCapacityStr(ad.offer.rooms, ad.offer.guests);
 
-      if (ad.author.avatar !== ('' || undefined)) {
+      if (ad.author.avatar && ad.author.avatar.length) {
+        window.util.toggleClassHidden(popupElement.querySelector('.popup__avatar'), false);
+
         popupElement.querySelector('.popup__avatar').src = ad.author.avatar;
-      } else {
-        popupElement.querySelector('.popup__avatar').style.display = 'none';
       }
 
-      if (ad.offer.description !== ('' || undefined)) {
+      if (ad.offer.description && ad.offer.description.length) {
+        window.util.toggleClassHidden(popupElement.querySelector('.popup__description'), false);
+
         popupElement.querySelector('.popup__description').textContent = ad.offer.description;
-      } else {
-        popupElement.querySelector('.popup__description').style.display = 'none';
       }
 
-      if (ad.offer.features !== ('' || undefined)) {
+      if (ad.offer.features && ad.offer.features.length) {
+        window.util.toggleClassHidden(popupElementFeatures, false);
+
         for (var i = 0; i < popupElementFeatures.children.length - ad.offer.features.length; i++) {
-          popupElementFeatures.children[popupElementFeatures.children.length - i - 1].style.display = 'none';
+          window.util.toggleClassHidden(popupElementFeatures.children[popupElementFeatures.children.length - i - 1], true);
         }
-      } else {
-        popupElementFeatures.style.display = 'none';
       }
 
-      if (ad.offer.photos !== ('' || undefined)) {
+      if (ad.offer.photos && ad.offer.photos.length) {
+        window.util.toggleClassHidden(popupElement.querySelector('.popup__photos'), false);
+
         popupElementPhoto.src = ad.offer.photos[0];
         if (ad.offer.photos.length > 1) {
           for (i = 1; i < ad.offer.photos.length; i++) {
             popupElement.querySelector('.popup__photos').appendChild(popupElementPhoto.cloneNode(true)).src = ad.offer.photos[i];
           }
         }
-      } else {
-        popupElementPhoto.style.display = 'none';
       }
 
       return popupElement;
