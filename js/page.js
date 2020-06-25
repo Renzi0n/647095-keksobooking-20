@@ -21,7 +21,6 @@
 
   var unlockPage = function (evt) {
     var onDataLoad = function (adObjectsArr) {
-      adObjectsArr[1].offer.features = undefined;
       if (evt.button === 0 || evt.key === 'Enter') {
         window.util.isPageDisabled = false;
 
@@ -40,11 +39,14 @@
 
         window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
 
-        window.move(evt);
-        window.map.mapPinMainNode.addEventListener('mousedown', window.move);
-
         window.map.mapPinMainNode.removeEventListener('mousedown', unlockPage);
         window.map.mapPinMainNode.removeEventListener('keydown', unlockPage);
+
+        window.map.mapPinMainNode.addEventListener('mousedown', window.move);
+
+        if (evt.button === 0) {
+          window.move(evt);
+        }
       }
     };
 
