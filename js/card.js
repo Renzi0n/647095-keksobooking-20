@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var mapCardTemplateNode = document.querySelector('#card').content.querySelector('.popup');
 
+  var mapCardTemplateNode = document.querySelector('#card').content.querySelector('.popup');
 
   window.card = {
     renderPopup: function (ad) {

@@ -11,11 +11,11 @@
     xhr.timeout = 10000;
 
     xhr.addEventListener('error', function () {
-      onError('Произошла ошибка соединения');
+      onError(true);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      onError(true);
     });
   };
 
@@ -35,6 +35,23 @@
 
       xhr.open('GET', URL + '/data');
       xhr.send();
+    },
+
+    save: function (data, onLoad, onError) {
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
+
+      xhr.addEventListener('load', function () {
+        if (xhr.status === STATUS_CODES.ok) {
+          onLoad(false);
+        } else {
+          onError(true);
+        }
+      });
+      setErrorListeners(xhr, onError);
+
+      xhr.open('POST', URL);
+      xhr.send(data);
     }
   };
 

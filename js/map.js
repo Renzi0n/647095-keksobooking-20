@@ -2,14 +2,20 @@
 
 (function () {
 
-  var MAIN_PIN_SIZES = {
-    active: {
-      width: 200,
-      height: 200
+  var MAIN_PIN = {
+    sizes: {
+      active: {
+        width: 200,
+        height: 200
+      },
+      inactive: {
+        width: 65,
+        height: 65
+      }
     },
-    inactive: {
-      width: 65,
-      height: 65
+    coords: {
+      x: '570px',
+      y: '375px'
     }
   };
   var MAP_SIZES = {
@@ -21,20 +27,22 @@
   var mapNode = document.querySelector('.map');
   var mapPinsNode = mapNode.querySelector('.map__pins');
   var mapPinMainNode = mapPinsNode.querySelector('.map__pin--main');
-  var mapFiltersNodes = mapNode.querySelector('.map__filters').children;
+  var mapFiltersNode = mapNode.querySelector('.map__filters');
+  var mapFiltersNodes = mapFiltersNode.children;
 
 
   window.map = {
     mapNode: mapNode,
     mapPinsNode: mapPinsNode,
     mapPinMainNode: mapPinMainNode,
+    mapFiltersNode: mapFiltersNode,
     mapFiltersNodes: mapFiltersNodes,
-    MAIN_PIN_SIZES: MAIN_PIN_SIZES,
+    MAIN_PIN: MAIN_PIN,
     MAP_SIZES: MAP_SIZES,
 
     getAddressMapPinMainStr: function () {
-      var сalculatedX = parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN_SIZES.active.width / 2;
-      var сalculatedHeight = window.util.isPageDisabled ? MAIN_PIN_SIZES.active.height / 2 : MAIN_PIN_SIZES.active.height;
+      var сalculatedX = parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN.sizes.active.width / 2;
+      var сalculatedHeight = window.util.isPageDisabled ? MAIN_PIN.sizes.active.height / 2 : MAIN_PIN.sizes.active.height;
       var сalculatedY = parseInt(mapPinMainNode.style.top, 10) + сalculatedHeight;
 
       return Math.round(сalculatedX) + ', ' + Math.round(сalculatedY);
