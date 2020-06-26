@@ -18,27 +18,27 @@
       popupElement.querySelector('.popup__text--capacity').textContent = window.form.getDeclForCapacityStr(ad.offer.rooms, ad.offer.guests);
 
       if (ad.author.avatar && ad.author.avatar.length) {
-        popupElement.querySelector('.popup__avatar').classList.toggle('hidden', false);
+        popupElement.querySelector('.popup__avatar').classList.remove('hidden');
 
         popupElement.querySelector('.popup__avatar').src = ad.author.avatar;
       }
 
       if (ad.offer.description && ad.offer.description.length) {
-        popupElement.querySelector('.popup__description').classList.toggle('hidden', false);
+        popupElement.querySelector('.popup__description').classList.remove('hidden');
 
         popupElement.querySelector('.popup__description').textContent = ad.offer.description;
       }
 
       if (ad.offer.features && ad.offer.features.length) {
-        popupElementFeatures.classList.toggle('hidden', false);
+        popupElementFeatures.classList.remove('hidden');
 
         for (var i = 0; i < popupElementFeatures.children.length - ad.offer.features.length; i++) {
-          popupElementFeatures.children[popupElementFeatures.children.length - i - 1].classList.toggle('hidden', true);
+          popupElementFeatures.children[popupElementFeatures.children.length - i - 1].classList.add('hidden');
         }
       }
 
       if (ad.offer.photos && ad.offer.photos.length) {
-        popupElement.querySelector('.popup__photos').classList.toggle('hidden', false);
+        popupElement.querySelector('.popup__photos').classList.remove('hidden');
 
         popupElementPhoto.src = ad.offer.photos[0];
         if (ad.offer.photos.length > 1) {

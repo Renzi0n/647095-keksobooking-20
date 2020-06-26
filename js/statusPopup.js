@@ -10,17 +10,8 @@
   var closePopup = function () {
     popupElement.remove();
 
-    popupElement.removeEventListener('click', onClickRandomArea);
+    document.removeEventListener('click', closePopup);
     document.removeEventListener('keydown', onPopupEscPress);
-    if (popupElement.classList.contains('error')) {
-      popupElement.querySelector('.error__button').removeEventListener('click', closePopup);
-    }
-  };
-
-  var onClickRandomArea = function (evt) {
-    if (evt.target !== popupElement.querySelector('p')) {
-      closePopup();
-    }
   };
 
   var onPopupEscPress = function (evt) {
@@ -33,10 +24,7 @@
     popupElement = isError ? errorPopupNode.cloneNode(true) : successPopupNode.cloneNode(true);
 
     document.addEventListener('keydown', onPopupEscPress);
-    popupElement.addEventListener('click', onClickRandomArea);
-    if (isError) {
-      popupElement.querySelector('.error__button').addEventListener('click', closePopup);
-    }
+    document.addEventListener('click', closePopup);
 
     document.querySelector('main').appendChild(popupElement);
   };
