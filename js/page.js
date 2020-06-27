@@ -80,7 +80,6 @@
     window.map.mapPinMainNode.style.left = window.map.MAIN_PIN.coords.x;
     window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
 
-    window.map.mapPinMainNode.removeEventListener('mousedown', window.move);
     window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
     window.map.mapPinMainNode.addEventListener('keydown', unlockPage);
   };
