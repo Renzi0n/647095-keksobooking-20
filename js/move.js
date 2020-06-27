@@ -4,11 +4,11 @@
 
   var MAP_PIN_MOVE = {
     x: {
-      min: window.map.MAP_SIZES.width - window.map.MAIN_PIN_SIZES.inactive.width / 2,
-      max: 0 - window.map.MAIN_PIN_SIZES.inactive.width / 2
+      min: window.map.MAP_SIZES.width - window.map.MAIN_PIN.sizes.inactive.width / 2,
+      max: 0 - window.map.MAIN_PIN.sizes.inactive.width / 2
     },
     y: {
-      min: window.map.MAP_SIZES.coordStart - window.map.MAIN_PIN_SIZES.inactive.height,
+      min: window.map.MAP_SIZES.coordStart - window.map.MAIN_PIN.sizes.inactive.height,
       max: window.map.MAP_SIZES.coordEnd
     }
   };
@@ -50,7 +50,6 @@
       } else if (mapPinMainNodeY > MAP_PIN_MOVE.y.max) {
         window.map.mapPinMainNode.style.top = MAP_PIN_MOVE.y.max + 'px';
       }
-
 
       window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
     };

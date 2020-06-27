@@ -48,8 +48,30 @@
     }
   };
 
+  var onSendForm = function (isError) {
+    if (!isError) {
+      window.lockPage();
+      window.scrollTo(0, 0);
+    }
+    window.renderPopup(isError);
+  };
+
+
   formNode.address.value = window.map.getAddressMapPinMainStr();
   formNode.addEventListener('change', onFormNodeChange);
+
+
+  formNode.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(formNode), onSendForm, onSendForm);
+    evt.preventDefault();
+  });
+
+  formNode.querySelector('.ad-form__reset').addEventListener('click', function (evt) {
+    evt.preventDefault();
+    window.lockPage();
+    window.scrollTo(0, 0);
+  });
+
 
   window.form = {
     formNode: formNode,
