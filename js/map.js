@@ -46,6 +46,16 @@
       var сalculatedY = parseInt(mapPinMainNode.style.top, 10) + сalculatedHeight;
 
       return Math.round(сalculatedX) + ', ' + Math.round(сalculatedY);
+    },
+    clearMap: function () {
+      var mapPinsAdNodes = mapPinsNode.querySelectorAll('.map__pin:not(.map__pin--main)');
+      for (var i = 0; i < mapPinsAdNodes.length; i++) {
+        mapPinsAdNodes[i].remove();
+      }
+
+      if (window.pin.popupNode) {
+        window.card.closePopup();
+      }
     }
   };
 
