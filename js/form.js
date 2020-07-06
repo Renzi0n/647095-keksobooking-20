@@ -51,7 +51,7 @@
   var onSendForm = function (isError) {
     if (!isError) {
       window.lockPage();
-      window.scrollTo(0, 0);
+      window.map.mapNode.scrollIntoView({block: 'center', behavior: 'smooth'});
     }
     window.renderPopup(isError);
   };
@@ -69,7 +69,7 @@
   formNode.querySelector('.ad-form__reset').addEventListener('click', function (evt) {
     evt.preventDefault();
     window.lockPage();
-    window.scrollTo(0, 0);
+    window.map.mapNode.scrollIntoView({block: 'center', behavior: 'smooth'});
   });
 
 

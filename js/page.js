@@ -24,14 +24,26 @@
       if (evt.button === 0 || evt.key === 'Enter') {
         window.util.isPageDisabled = false;
 
-        for (var i = 0; i < adObjectsArr.length; i++) {
-          var adObjectsArrItem = adObjectsArr[i];
+        var renderMapPins = function (filteredAdObjectsArr) { // отрисовка пинов
+          for (var i = 0; i < filteredAdObjectsArr.length; i++) {
+            var adObjectsArrItem = filteredAdObjectsArr[i];
 
-          if (Object.keys(adObjectsArrItem).includes('offer')) {
-            fragment.appendChild(window.pin.renderMapPin(adObjectsArrItem));
+            if (Object.keys(adObjectsArrItem).includes('offer')) { // проверяем на существования поля с основными данными у объявления
+              fragment.appendChild(window.pin.renderMapPin(adObjectsArrItem));
+            }
           }
-        }
-        window.map.mapPinsNode.appendChild(fragment);
+
+          window.map.mapPinsNode.appendChild(fragment);
+        };
+
+        window.onChangeTypeFilterNode = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов
+          window.map.clearMap();
+          renderMapPins(window.filter.filterMapPins(adObjectsArr));
+        };
+
+        renderMapPins(window.filter.filterMapPins(adObjectsArr)); // отрисовываем пины при фильтрах по умолчанию
+
+        window.filter.typeFilterNode.addEventListener('change', window.onChangeTypeFilterNode); // добавляем обработчик для фильтра по типу
 
         toggleDisabledOnFormNodes();
         window.map.mapNode.classList.remove('map--faded');
@@ -54,8 +66,8 @@
   toggleDisabledOnFormNodes();
 
   window.map.mapPinMainNode.addEventListener('keydown', unlockPage);
-  window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
   window.map.mapPinMainNode.addEventListener('mousedown', window.move);
+  window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
 
 
   window.lockPage = function () {
@@ -66,19 +78,13 @@
     window.form.formNode.classList.add('ad-form--disabled');
     window.form.formNode.reset();
     window.map.mapFiltersNode.reset();
+    window.map.clearMap();
 
-    var mapPinsAdNodes = window.map.mapPinsNode.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < mapPinsAdNodes.length; i++) {
-      mapPinsAdNodes[i].remove();
-    }
-
-    if (window.pin.popupNode) {
-      window.card.closePopup();
-    }
-
-    window.map.mapPinMainNode.style.top = window.map.MAIN_PIN.coords.y;
+    window.map.mapPinMainNode.style.top = window.map.MAIN_PIN.coords.y; // возращаем главный пин в изначальное положение
     window.map.mapPinMainNode.style.left = window.map.MAIN_PIN.coords.x;
     window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
+
+    window.filter.typeFilterNode.removeEventListener('change', window.onChangeTypeFilterNode); // удаляем обработчик для фильтра по типу
 
     window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
     window.map.mapPinMainNode.addEventListener('keydown', unlockPage);
