@@ -2,6 +2,15 @@
 
 (function () {
 
+  var FEATURES_CLASS_MAP = {
+    'wifi': 'popup__feature--wifi',
+    'dishwasher': 'popup__feature--dishwasher',
+    'parking': 'popup__feature--parking',
+    'washer': 'popup__feature--washer',
+    'elevator': 'popup__feature--elevator',
+    'conditioner': 'popup__feature--conditioner'
+  };
+
   var mapCardTemplateNode = document.querySelector('#card').content.querySelector('.popup');
 
   window.card = {
@@ -32,8 +41,12 @@
       if (ad.offer.features && ad.offer.features.length) {
         popupElementFeatures.classList.remove('hidden');
 
-        for (var i = 0; i < popupElementFeatures.children.length - ad.offer.features.length; i++) {
-          popupElementFeatures.children[popupElementFeatures.children.length - i - 1].classList.add('hidden');
+        for (var i = 0; i < popupElementFeatures.children.length; i++) {
+          for (var j = 0; j < ad.offer.features.length; j++) { // Проверяем каждый элемент из разметки на наличие у него класса нужной фичи из объявления
+            if (popupElementFeatures.children[i].classList.contains(FEATURES_CLASS_MAP[ad.offer.features[j]])) {
+              popupElementFeatures.children[i].classList.remove('hidden'); // Если такой класс есть, то показываем фичу в карточке
+            }
+          }
         }
       }
 

@@ -36,14 +36,18 @@
           window.map.mapPinsNode.appendChild(fragment);
         };
 
-        window.onChangeTypeFilterNode = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов
-          window.map.clearMap();
-          renderMapPins(window.filter.filterMapPins(adObjectsArr));
+        window.onChangeFilterNode = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов через дебаунс
+          var updateMapPins = window.debounce(function () {
+            window.map.clearMap();
+            renderMapPins(window.filter.filterMapPins(adObjectsArr));
+          });
+
+          updateMapPins();
         };
 
         renderMapPins(window.filter.filterMapPins(adObjectsArr)); // отрисовываем пины при фильтрах по умолчанию
 
-        window.filter.typeFilterNode.addEventListener('change', window.onChangeTypeFilterNode); // добавляем обработчик для фильтра по типу
+        window.filter.filterNode.addEventListener('change', window.onChangeFilterNode); // обработчик изменения формы
 
         toggleDisabledOnFormNodes();
         window.map.mapNode.classList.remove('map--faded');
@@ -84,7 +88,7 @@
     window.map.mapPinMainNode.style.left = window.map.MAIN_PIN.coords.x;
     window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
 
-    window.filter.typeFilterNode.removeEventListener('change', window.onChangeTypeFilterNode); // удаляем обработчик для фильтра по типу
+    window.filter.filterNode.removeEventListener('change', window.onChangeFilterNode); // удаляем обработчик для фильтров
 
     window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
     window.map.mapPinMainNode.addEventListener('keydown', unlockPage);
