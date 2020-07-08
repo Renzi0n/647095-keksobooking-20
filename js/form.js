@@ -48,7 +48,7 @@
     }
   };
 
-  var onFormSend = function (isError) {
+  var onFormSubmit = function (isError) {
     if (!isError) {
       window.lockPage();
       window.map.mapNode.scrollIntoView({block: 'center', behavior: 'smooth'});
@@ -62,7 +62,7 @@
 
 
   formNode.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(formNode), onFormSend, onFormSend);
+    window.backend.save(new FormData(formNode), onFormSubmit, onFormSubmit);
     evt.preventDefault();
   });
 

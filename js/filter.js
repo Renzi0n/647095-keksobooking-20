@@ -24,11 +24,11 @@
   };
 
   var filterFormNode = document.querySelector('.map__filters');
-  var typeFilterFormNode = filterFormNode.querySelector('[name=housing-type]');
-  var priceFilterFormNode = filterFormNode.querySelector('[name=housing-price]');
-  var roomsFilterFormNode = filterFormNode.querySelector('[name=housing-rooms]');
-  var guestsFilterFormNode = filterFormNode.querySelector('[name=housing-guests]');
-  var featureFilterFormNodesArr = Array.from(filterFormNode.querySelectorAll('[name=features]'));
+  var typeFilterFormNode = filterFormNode['housing-type'];
+  var priceFilterFormNode = filterFormNode['housing-price'];
+  var roomsFilterFormNode = filterFormNode['housing-rooms'];
+  var guestsFilterFormNode = filterFormNode['housing-guests'];
+  var featureFilterFormNodesArr = Array.from(filterFormNode.features);
 
 
   var filterPinsByType = function (dataElement) {
