@@ -48,23 +48,19 @@
   };
 
   var filterPinsByFeatures = function (dataElement) {
-    var isShowElement;
+    var isShowElement = true;
 
     var checkedFeatures = featureFilterFormNodesArr.filter(function (elem) {
       return elem.checked;
     });
 
-    if (checkedFeatures.length) {
-      for (var i = 0; i < checkedFeatures.length; i++) {
-        if (dataElement.offer.features.includes(checkedFeatures[i].value)) { // Проверяем входят ли эти удобства в текущее объявление
-          isShowElement = true;
-        } else {
-          isShowElement = false; // Если какого-то удобства нет, то не показываем объявление
+    if (checkedFeatures.length) { // проверяем активна ли хоть одна фича
+      for (var i = 0; i < checkedFeatures.length; i++) { // цикл по активным фичам
+        if (!dataElement.offer.features.includes(checkedFeatures[i].value)) { // если хоть одна фича не входит в наше объявление, скрываем его
+          isShowElement = false;
           break;
         }
       }
-    } else {
-      isShowElement = true;
     }
 
     return isShowElement;
