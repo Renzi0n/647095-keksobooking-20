@@ -3,10 +3,10 @@
 (function () {
 
   var ROOMS_FOR_GUESTS_MAP = {
-    '1': ['1'],
-    '2': ['1', '2'],
-    '3': ['1', '2', '3'],
-    '100': ['0']
+    1: ['1'],
+    2: ['1', '2'],
+    3: ['1', '2', '3'],
+    100: ['0']
   };
 
   var formNode = document.querySelector('.ad-form');

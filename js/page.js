@@ -13,9 +13,10 @@
       window.form.formFieldsNodes[i].style.pointerEvents = pointerEventsValue;
     }
 
-    for (i = 0; i < window.map.mapFiltersNodes.length; i++) {
-      window.map.mapFiltersNodes[i].disabled = window.util.isPageDisabled;
-      window.map.mapFiltersNodes[i].style.pointerEvents = pointerEventsValue;
+    var filtersNodes = window.filter.filterFormNode.children;
+    for (i = 0; i < filtersNodes.length; i++) {
+      filtersNodes[i].disabled = window.util.isPageDisabled;
+      filtersNodes[i].style.pointerEvents = pointerEventsValue;
     }
   };
 
@@ -36,7 +37,7 @@
           window.map.mapPinsNode.appendChild(fragment);
         };
 
-        window.onChangeFilterNode = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов через дебаунс
+        window.onFilterFormNodeChange = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов через дебаунс
           var updateMapPins = window.debounce(function () {
             window.map.clearMap();
             renderMapPins(window.filter.filterMapPins(adObjectsArr));
@@ -47,7 +48,7 @@
 
         renderMapPins(window.filter.filterMapPins(adObjectsArr)); // отрисовываем пины при фильтрах по умолчанию
 
-        window.filter.filterNode.addEventListener('change', window.onChangeFilterNode); // обработчик изменения формы
+        window.filter.filterFormNode.addEventListener('change', window.onFilterFormNodeChange); // обработчик изменения формы
 
         toggleDisabledOnFormNodes();
         window.map.mapNode.classList.remove('map--faded');
@@ -81,14 +82,14 @@
     window.map.mapNode.classList.add('map--faded');
     window.form.formNode.classList.add('ad-form--disabled');
     window.form.formNode.reset();
-    window.map.mapFiltersNode.reset();
+    window.filter.filterFormNode.reset();
     window.map.clearMap();
 
     window.map.mapPinMainNode.style.top = window.map.MAIN_PIN.coords.y; // возращаем главный пин в изначальное положение
     window.map.mapPinMainNode.style.left = window.map.MAIN_PIN.coords.x;
     window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
 
-    window.filter.filterNode.removeEventListener('change', window.onChangeFilterNode); // удаляем обработчик для фильтров
+    window.filter.filterFormNode.removeEventListener('change', window.onFilterFormNodeChange); // удаляем обработчик для фильтров
 
     window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
     window.map.mapPinMainNode.addEventListener('keydown', unlockPage);

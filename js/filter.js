@@ -5,96 +5,82 @@
   var MAX_PINS_ON_MAP = 5;
   var VALUE_OF_ALL_ADS = 'any';
   var PRICE_MAP = {
-    'any': {
+    any: {
       min: -Infinity,
       max: Infinity
     },
-    'middle': {
+    middle: {
       min: 10000,
       max: 50000
     },
-    'low': {
+    low: {
       min: 0,
       max: 10000
     },
-    'high': {
+    high: {
       min: 50000,
       max: Infinity
     }
   };
 
-  var filterNode = document.querySelector('.map__filters');
-  var typeFilterNode = filterNode.querySelector('#housing-type');
-  var priceFilterNode = filterNode.querySelector('#housing-price');
-  var roomsFilterNode = filterNode.querySelector('#housing-rooms');
-  var guestsFilterNode = filterNode.querySelector('#housing-guests');
-  var featureFilterNodesArr = Array.from(filterNode.querySelectorAll('.map__checkbox'));
+  var filterFormNode = document.querySelector('.map__filters');
+  var typeFilterFormNode = filterFormNode.querySelector('[name=housing-type]');
+  var priceFilterFormNode = filterFormNode.querySelector('[name=housing-price]');
+  var roomsFilterFormNode = filterFormNode.querySelector('[name=housing-rooms]');
+  var guestsFilterFormNode = filterFormNode.querySelector('[name=housing-guests]');
+  var featureFilterFormNodesArr = Array.from(filterFormNode.querySelectorAll('[name=features]'));
 
-  var filterPinsOfType = function (dataElement) {
-    if (typeFilterNode.value === dataElement.offer.type || typeFilterNode.value === VALUE_OF_ALL_ADS) {
-      return true;
-    }
 
-    return false;
+  var filterPinsByType = function (dataElement) {
+    return typeFilterFormNode.value === dataElement.offer.type || typeFilterFormNode.value === VALUE_OF_ALL_ADS;
   };
 
-  var filterPinsOfPrice = function (dataElement) {
-    if (PRICE_MAP[priceFilterNode.value].min < dataElement.offer.price && PRICE_MAP[priceFilterNode.value].max > dataElement.offer.price) {
-      return true;
-    }
-
-    return false;
+  var filterPinsByPrice = function (dataElement) {
+    return PRICE_MAP[priceFilterFormNode.value].min < dataElement.offer.price && PRICE_MAP[priceFilterFormNode.value].max > dataElement.offer.price;
   };
 
-  var filterPinsOfRooms = function (dataElement) {
-    if (Number(roomsFilterNode.value) === dataElement.offer.rooms || roomsFilterNode.value === VALUE_OF_ALL_ADS) {
-      return true;
-    }
-
-    return false;
+  var filterPinsByRooms = function (dataElement) {
+    return +roomsFilterFormNode.value === dataElement.offer.rooms || roomsFilterFormNode.value === VALUE_OF_ALL_ADS;
   };
 
-  var filterPinsOfGuests = function (dataElement) {
-    if (Number(guestsFilterNode.value) === dataElement.offer.guests || guestsFilterNode.value === VALUE_OF_ALL_ADS) {
-      return true;
-    }
-
-    return false;
+  var filterPinsByGuests = function (dataElement) {
+    return +guestsFilterFormNode.value === dataElement.offer.guests || guestsFilterFormNode.value === VALUE_OF_ALL_ADS;
   };
 
-  var filterPinsOfFeatures = function (dataElement) {
-    var featuresFilterResult;
+  var filterPinsByFeatures = function (dataElement) {
+    var isShowElement;
 
-    var checkedFeatures = featureFilterNodesArr.filter(function (elem) {
+    var checkedFeatures = featureFilterFormNodesArr.filter(function (elem) {
       return elem.checked;
     });
 
-    featuresFilterResult = !checkedFeatures.length ? true : false; // Проверяем есть ли вообще вкл. удобства
-
-    if (!featuresFilterResult) {
+    if (checkedFeatures.length) {
       for (var i = 0; i < checkedFeatures.length; i++) {
         if (dataElement.offer.features.includes(checkedFeatures[i].value)) { // Проверяем входят ли эти удобства в текущее объявление
-          featuresFilterResult = true;
+          isShowElement = true;
         } else {
-          featuresFilterResult = false; // Если какого-то удобства нет, то не показываем объявление
+          isShowElement = false; // Если какого-то удобства нет, то не показываем объявление
           break;
         }
       }
+    } else {
+      isShowElement = true;
     }
 
-    return featuresFilterResult;
+    return isShowElement;
   };
 
+
   window.filter = {
-    filterNode: filterNode,
+    filterFormNode: filterFormNode,
 
     filterMapPins: function (data) {
       return data.slice(0, MAX_PINS_ON_MAP).
-      filter(filterPinsOfType).
-      filter(filterPinsOfPrice).
-      filter(filterPinsOfRooms).
-      filter(filterPinsOfGuests).
-      filter(filterPinsOfFeatures);
+      filter(filterPinsByType).
+      filter(filterPinsByPrice).
+      filter(filterPinsByRooms).
+      filter(filterPinsByGuests).
+      filter(filterPinsByFeatures);
     }
   };
 

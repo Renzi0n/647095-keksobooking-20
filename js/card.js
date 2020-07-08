@@ -3,12 +3,12 @@
 (function () {
 
   var FEATURES_CLASS_MAP = {
-    'wifi': 'popup__feature--wifi',
-    'dishwasher': 'popup__feature--dishwasher',
-    'parking': 'popup__feature--parking',
-    'washer': 'popup__feature--washer',
-    'elevator': 'popup__feature--elevator',
-    'conditioner': 'popup__feature--conditioner'
+    wifi: 'popup__feature--wifi',
+    dishwasher: 'popup__feature--dishwasher',
+    parking: 'popup__feature--parking',
+    washer: 'popup__feature--washer',
+    elevator: 'popup__feature--elevator',
+    conditioner: 'popup__feature--conditioner'
   };
 
   var mapCardTemplateNode = document.querySelector('#card').content.querySelector('.popup');
