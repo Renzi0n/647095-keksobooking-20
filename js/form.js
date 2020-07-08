@@ -3,10 +3,10 @@
 (function () {
 
   var ROOMS_FOR_GUESTS_MAP = {
-    '1': ['1'],
-    '2': ['1', '2'],
-    '3': ['1', '2', '3'],
-    '100': ['0']
+    1: ['1'],
+    2: ['1', '2'],
+    3: ['1', '2', '3'],
+    100: ['0']
   };
 
   var formNode = document.querySelector('.ad-form');
@@ -48,7 +48,7 @@
     }
   };
 
-  var onSendForm = function (isError) {
+  var onFormSubmit = function (isError) {
     if (!isError) {
       window.lockPage();
       window.map.mapNode.scrollIntoView({block: 'center', behavior: 'smooth'});
@@ -62,7 +62,7 @@
 
 
   formNode.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(formNode), onSendForm, onSendForm);
+    window.backend.save(new FormData(formNode), onFormSubmit, onFormSubmit);
     evt.preventDefault();
   });
 

@@ -27,16 +27,12 @@
   var mapNode = document.querySelector('.map');
   var mapPinsNode = mapNode.querySelector('.map__pins');
   var mapPinMainNode = mapPinsNode.querySelector('.map__pin--main');
-  var mapFiltersNode = mapNode.querySelector('.map__filters');
-  var mapFiltersNodes = mapFiltersNode.children;
 
 
   window.map = {
     mapNode: mapNode,
     mapPinsNode: mapPinsNode,
     mapPinMainNode: mapPinMainNode,
-    mapFiltersNode: mapFiltersNode,
-    mapFiltersNodes: mapFiltersNodes,
     MAIN_PIN: MAIN_PIN,
     MAP_SIZES: MAP_SIZES,
 

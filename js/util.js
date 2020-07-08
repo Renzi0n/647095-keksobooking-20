@@ -5,19 +5,19 @@
   window.util = {
     isPageDisabled: true,
     TYPES_MAP: {
-      'palace': {
+      palace: {
         name: 'Дворец',
         minPrice: '10000'
       },
-      'flat': {
+      flat: {
         name: 'Комната',
         minPrice: '1000'
       },
-      'house': {
+      house: {
         name: 'Дом',
         minPrice: '5000'
       },
-      'bungalo': {
+      bungalo: {
         name: 'Бунгало',
         minPrice: '0'
       }
