@@ -20,22 +20,22 @@
     }
   };
 
+  var renderMapPins = function (filteredAdObjectsArr) { // отрисовка пинов
+    for (var i = 0; i < filteredAdObjectsArr.length; i++) {
+      var adObjectsArrItem = filteredAdObjectsArr[i];
+
+      if (Object.keys(adObjectsArrItem).includes('offer')) { // проверяем на существования поля с основными данными у объявления
+        fragment.appendChild(window.pin.renderMapPin(adObjectsArrItem));
+      }
+    }
+
+    window.map.mapPinsNode.appendChild(fragment);
+  };
+
   var unlockPage = function (evt) {
     var onDataLoad = function (adObjectsArr) {
       if (evt.button === 0 || evt.key === 'Enter') {
         window.util.isPageDisabled = false;
-
-        var renderMapPins = function (filteredAdObjectsArr) { // отрисовка пинов
-          for (var i = 0; i < filteredAdObjectsArr.length; i++) {
-            var adObjectsArrItem = filteredAdObjectsArr[i];
-
-            if (Object.keys(adObjectsArrItem).includes('offer')) { // проверяем на существования поля с основными данными у объявления
-              fragment.appendChild(window.pin.renderMapPin(adObjectsArrItem));
-            }
-          }
-
-          window.map.mapPinsNode.appendChild(fragment);
-        };
 
         window.onFilterFormNodeChange = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов через дебаунс
           var updateMapPins = window.debounce(function () {
@@ -49,6 +49,9 @@
         renderMapPins(window.filter.filterMapPins(adObjectsArr)); // отрисовываем пины при фильтрах по умолчанию
 
         window.filter.filterFormNode.addEventListener('change', window.onFilterFormNodeChange); // обработчик изменения формы
+
+        window.uploadAvatarNode.addEventListener('change', window.onUploadAvatarNodeChange); // добавляем обработчик загрузки аватара
+        window.uploadHousingImgNode.addEventListener('change', window.onUploadHousingImgNode); // добавляем обработчик загрузки фото жилья
 
         toggleDisabledOnFormNodes();
         window.map.mapNode.classList.remove('map--faded');
@@ -83,11 +86,15 @@
     window.form.formNode.classList.add('ad-form--disabled');
     window.form.formNode.reset();
     window.filter.filterFormNode.reset();
+    window.resetImages();
     window.map.clearMap();
 
     window.map.mapPinMainNode.style.top = window.map.MAIN_PIN.coords.y; // возращаем главный пин в изначальное положение
     window.map.mapPinMainNode.style.left = window.map.MAIN_PIN.coords.x;
     window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
+
+    window.uploadAvatarNode.removeEventListener('change', window.onUploadAvatarNodeChange); // удаляем обработчик загрузки аватара
+    window.uploadHousingImgNode.removeEventListener('change', window.onUploadHousingImgNode); // удаляем обработчик загрузки фото жилья
 
     window.filter.filterFormNode.removeEventListener('change', window.onFilterFormNodeChange); // удаляем обработчик для фильтров
 
