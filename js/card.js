@@ -45,6 +45,7 @@
           for (var j = 0; j < ad.offer.features.length; j++) { // Проверяем каждый элемент из разметки на наличие у него класса нужной фичи из объявления
             if (popupElementFeatures.children[i].classList.contains(FEATURES_CLASS_MAP[ad.offer.features[j]])) {
               popupElementFeatures.children[i].classList.remove('hidden'); // Если такой класс есть, то показываем фичу в карточке
+              break;
             }
           }
         }
