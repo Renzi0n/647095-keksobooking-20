@@ -50,8 +50,8 @@
 
         window.filter.filterFormNode.addEventListener('change', window.onFilterFormNodeChange); // обработчик изменения формы
 
-        window.uploadAvatarNode.addEventListener('change', window.onUploadAvatarNodeChange); // добавляем обработчик загрузки аватара
-        window.uploadHousingImgNode.addEventListener('change', window.onUploadHousingImgNode); // добавляем обработчик загрузки фото жилья
+        window.form.formNode.avatar.addEventListener('change', window.onUploadAvatarNodeChange); // добавляем обработчик загрузки аватара
+        window.form.formNode.images.addEventListener('change', window.onUploadHousingImgNode); // добавляем обработчик загрузки фото жилья
 
         toggleDisabledOnFormNodes();
         window.map.mapNode.classList.remove('map--faded');
@@ -93,8 +93,8 @@
     window.map.mapPinMainNode.style.left = window.map.MAIN_PIN.coords.x;
     window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
 
-    window.uploadAvatarNode.removeEventListener('change', window.onUploadAvatarNodeChange); // удаляем обработчик загрузки аватара
-    window.uploadHousingImgNode.removeEventListener('change', window.onUploadHousingImgNode); // удаляем обработчик загрузки фото жилья
+    window.form.formNode.avatar.removeEventListener('change', window.onUploadAvatarNodeChange); // удаляем обработчик загрузки аватара
+    window.form.formNode.images.removeEventListener('change', window.onUploadHousingImgNode); // удаляем обработчик загрузки фото жилья
 
     window.filter.filterFormNode.removeEventListener('change', window.onFilterFormNodeChange); // удаляем обработчик для фильтров
 
