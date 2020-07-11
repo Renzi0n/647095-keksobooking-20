@@ -2,66 +2,60 @@
 
 (function () {
 
-  var fragment = document.createDocumentFragment();
-
-
   var toggleDisabledOnFormNodes = function () {
     var pointerEventsValue = window.util.isPageDisabled ? 'none' : 'auto';
 
-    for (var i = 0; i < window.form.formFieldsNodes.length; i++) {
-      window.form.formFieldsNodes[i].disabled = window.util.isPageDisabled;
-      window.form.formFieldsNodes[i].style.pointerEvents = pointerEventsValue;
-    }
+    Array.from(window.form.formFieldsNodes).forEach(function (elem) {
+      elem.disabled = window.util.isPageDisabled;
+      elem.style.pointerEvents = pointerEventsValue;
+    });
 
-    var filtersNodes = window.filter.filterFormNode.children;
-    for (i = 0; i < filtersNodes.length; i++) {
-      filtersNodes[i].disabled = window.util.isPageDisabled;
-      filtersNodes[i].style.pointerEvents = pointerEventsValue;
-    }
+    Array.from(window.filter.filterFormNode.children).forEach(function (elem) {
+      elem.disabled = window.util.isPageDisabled;
+      elem.style.pointerEvents = pointerEventsValue;
+    });
   };
 
   var renderMapPins = function (filteredAdObjectsArr) { // отрисовка пинов
-    for (var i = 0; i < filteredAdObjectsArr.length; i++) {
-      var adObjectsArrItem = filteredAdObjectsArr[i];
+    var fragment = document.createDocumentFragment();
 
-      if (Object.keys(adObjectsArrItem).includes('offer')) { // проверяем на существования поля с основными данными у объявления
-        fragment.appendChild(window.pin.renderMapPin(adObjectsArrItem));
+    filteredAdObjectsArr.forEach(function (elem) {
+      if (Object.keys(elem).includes('offer')) { // проверяем на существования поля с основными данными у объявления
+        fragment.appendChild(window.pin.renderMapPin(elem));
       }
-    }
+    });
 
     window.map.mapPinsNode.appendChild(fragment);
   };
 
-  var unlockPage = function (evt) {
+  var unlockPage = function () {
     var onDataLoad = function (adObjectsArr) {
-      if (evt.button === 0 || evt.key === 'Enter') {
-        window.util.isPageDisabled = false;
+      window.util.isPageDisabled = false;
 
-        window.onFilterFormNodeChange = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов через дебаунс
-          var updateMapPins = window.debounce(function () {
-            window.map.clearMap();
-            renderMapPins(window.filter.filterMapPins(adObjectsArr));
-          });
+      window.onFilterFormNodeChange = function () { // очищаем карту и вызываем отрисовку отфильтрованных по типу пинов через дебаунс
+        var updateMapPins = window.debounce(function () {
+          window.map.clearMap();
+          renderMapPins(window.filter.filterMapPins(adObjectsArr));
+        });
 
-          updateMapPins();
-        };
+        updateMapPins();
+      };
 
-        renderMapPins(window.filter.filterMapPins(adObjectsArr)); // отрисовываем пины при фильтрах по умолчанию
+      renderMapPins(window.filter.filterMapPins(adObjectsArr)); // отрисовываем пины при фильтрах по умолчанию
 
-        window.filter.filterFormNode.addEventListener('change', window.onFilterFormNodeChange); // обработчик изменения формы
+      window.filter.filterFormNode.addEventListener('change', window.onFilterFormNodeChange); // обработчик изменения формы
 
-        window.form.formNode.avatar.addEventListener('change', window.onUploadAvatarNodeChange); // добавляем обработчик загрузки аватара
-        window.form.formNode.images.addEventListener('change', window.onUploadHousingImgNode); // добавляем обработчик загрузки фото жилья
+      window.form.formNode.avatar.addEventListener('change', window.onUploadAvatarNodeChange); // добавляем обработчик загрузки аватара
+      window.form.formNode.images.addEventListener('change', window.onUploadHousingImgNode); // добавляем обработчик загрузки фото жилья
 
-        toggleDisabledOnFormNodes();
-        window.map.mapNode.classList.remove('map--faded');
-        window.form.formNode.classList.remove('ad-form--disabled');
+      toggleDisabledOnFormNodes();
+      window.map.mapNode.classList.remove('map--faded');
+      window.form.formNode.classList.remove('ad-form--disabled');
 
-        window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
+      window.form.formNode.address.value = window.map.getAddressMapPinMainStr();
 
-        window.map.mapPinMainNode.removeEventListener('mousedown', unlockPage);
-        window.map.mapPinMainNode.removeEventListener('keydown', unlockPage);
-      }
+      window.map.mapPinMainNode.removeEventListener('keydown', onMapPinMainNodeKeyDownEnter);
+      window.map.mapPinMainNode.removeEventListener('mousedown', onMapPinMainNodeMouseDownLeft);
     };
 
     var onDataError = function (message) {
@@ -71,11 +65,23 @@
     window.backend.load(onDataLoad, onDataError);
   };
 
+  var onMapPinMainNodeKeyDownEnter = function (evt) {
+    if (evt.key === window.util.EVT_KEYS.enter) {
+      unlockPage();
+    }
+  };
+
+  var onMapPinMainNodeMouseDownLeft = function (evt) {
+    if (evt.button === window.util.EVT_KEYS.leftBtn) {
+      unlockPage();
+    }
+  };
+
   toggleDisabledOnFormNodes();
 
-  window.map.mapPinMainNode.addEventListener('keydown', unlockPage);
-  window.map.mapPinMainNode.addEventListener('mousedown', window.move);
-  window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
+  window.map.mapPinMainNode.addEventListener('keydown', onMapPinMainNodeKeyDownEnter);
+  window.map.mapPinMainNode.addEventListener('mousedown', window.onMapPinMainNodeMouseDownLeft);
+  window.map.mapPinMainNode.addEventListener('mousedown', onMapPinMainNodeMouseDownLeft);
 
 
   window.lockPage = function () {
@@ -98,8 +104,8 @@
 
     window.filter.filterFormNode.removeEventListener('change', window.onFilterFormNodeChange); // удаляем обработчик для фильтров
 
-    window.map.mapPinMainNode.addEventListener('mousedown', unlockPage);
-    window.map.mapPinMainNode.addEventListener('keydown', unlockPage);
+    window.map.mapPinMainNode.addEventListener('mousedown', onMapPinMainNodeKeyDownEnter);
+    window.map.mapPinMainNode.addEventListener('keydown', onMapPinMainNodeMouseDownLeft);
   };
 
 })();

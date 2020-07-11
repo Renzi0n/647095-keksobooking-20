@@ -22,17 +22,12 @@
         minPrice: '0'
       }
     },
+    EVT_KEYS: {
+      enter: 'Enter',
+      esc: 'Escape',
+      leftBtn: 0
+    },
 
-    getRandomNumber: function (min, max) {
-      var rand = min + Math.random() * (max + 1 - min);
-      return Math.floor(rand);
-    },
-    getRandomElementOfArr: function (arr) {
-      return arr[window.util.getRandomNumber(0, arr.length - 1)];
-    },
-    getRandomLengthArr: function (arr) {
-      return arr.slice(0, window.util.getRandomNumber(1, arr.length));
-    },
     getDeclOfNumb: function (number, titles) {
       var cases = [2, 0, 1, 1, 1, 2];
 

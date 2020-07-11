@@ -13,9 +13,9 @@
     window.pin.popupNode = window.map.mapPinsNode.insertAdjacentElement('afterEnd', window.card.renderPopup(ad));
     window.pin.popupCloseNode = window.pin.popupNode.querySelector('.popup__close');
 
-    window.pin.popupCloseNode.addEventListener('click', window.card.closePopup);
-    window.pin.popupCloseNode.addEventListener('keydown', window.card.onPopupCloseNodeEnterPress);
-    document.addEventListener('keydown', window.card.onPopupEscPress);
+    window.pin.popupCloseNode.addEventListener('click', window.card.onPopupCloseNodeClick);
+    window.pin.popupCloseNode.addEventListener('keydown', window.card.onPopupCloseNodeKeyDownEnter);
+    document.addEventListener('keydown', window.card.onDocumentKeyDownEsc);
   };
 
   window.pin = {
