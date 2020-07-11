@@ -17,7 +17,10 @@
     renderPopup: function (ad) {
       var popupElement = mapCardTemplateNode.cloneNode(true);
       var popupElementFeatures = popupElement.querySelector('.popup__features');
-      var popupElementPhoto = popupElement.querySelector('.popup__photo');
+      var popupElementAvatar = popupElement.querySelector('.popup__avatar');
+      var popupElementDescription = popupElement.querySelector('.popup__description');
+      var popupElementPhotos = popupElement.querySelector('.popup__photos');
+      var popupElementPhoto = popupElementPhotos.querySelector('.popup__photo');
 
       popupElement.querySelector('.popup__title').textContent = ad.offer.title;
       popupElement.querySelector('.popup__text--address').textContent = ad.offer.address;
@@ -27,15 +30,15 @@
       popupElement.querySelector('.popup__text--capacity').textContent = window.form.getDeclForCapacityStr(ad.offer.rooms, ad.offer.guests);
 
       if (ad.author.avatar && ad.author.avatar.length) {
-        popupElement.querySelector('.popup__avatar').classList.remove('hidden');
+        popupElementAvatar.classList.remove('hidden');
 
-        popupElement.querySelector('.popup__avatar').src = ad.author.avatar;
+        popupElementAvatar.src = ad.author.avatar;
       }
 
       if (ad.offer.description && ad.offer.description.length) {
-        popupElement.querySelector('.popup__description').classList.remove('hidden');
+        popupElementDescription.classList.remove('hidden');
 
-        popupElement.querySelector('.popup__description').textContent = ad.offer.description;
+        popupElementDescription.textContent = ad.offer.description;
       }
 
       if (ad.offer.features && ad.offer.features.length) {
@@ -52,12 +55,12 @@
       }
 
       if (ad.offer.photos && ad.offer.photos.length) {
-        popupElement.querySelector('.popup__photos').classList.remove('hidden');
+        popupElementPhotos.classList.remove('hidden');
 
         popupElementPhoto.src = ad.offer.photos[0];
         if (ad.offer.photos.length > 1) {
           for (i = 1; i < ad.offer.photos.length; i++) {
-            popupElement.querySelector('.popup__photos').appendChild(popupElementPhoto.cloneNode(true)).src = ad.offer.photos[i];
+            popupElementPhotos.appendChild(popupElementPhoto.cloneNode(true)).src = ad.offer.photos[i];
           }
         }
       }
@@ -65,24 +68,28 @@
       return popupElement;
     },
 
-    onPopupEscPress: function (evt) {
-      if (evt.key === 'Escape') {
+    onDocumentKeyDownEsc: function (evt) {
+      if (evt.key === window.util.EVT_KEYS.esc) {
         window.card.closePopup();
       }
     },
 
-    onPopupCloseNodeEnterPress: function (evt) {
-      if (evt.key === 'Enter') {
+    onPopupCloseNodeKeyDownEnter: function (evt) {
+      if (evt.key === window.util.EVT_KEYS.enter) {
         window.card.closePopup();
       }
+    },
+
+    onPopupCloseNodeClick: function () {
+      window.card.closePopup();
     },
 
     closePopup: function () {
       window.pin.popupNode.remove();
 
-      window.pin.popupCloseNode.removeEventListener('click', window.card.closePopup);
-      window.pin.popupCloseNode.removeEventListener('keydown', window.card.onPopupCloseNodeEnterPress);
-      document.removeEventListener('keydown', window.card.onPopupEscPress);
+      window.pin.popupCloseNode.removeEventListener('click', window.card.onPopupCloseNodeClick);
+      window.pin.popupCloseNode.removeEventListener('keydown', window.card.onPopupCloseNodeKeyDownEnter);
+      document.removeEventListener('keydown', window.card.onDocumentKeyDownEsc);
     }
   };
 

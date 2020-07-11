@@ -30,7 +30,6 @@
   var guestsFilterFormNode = filterFormNode['housing-guests'];
   var featureFilterFormNodesArr = Array.from(filterFormNode.features);
 
-
   var filterPinsByType = function (dataElement) {
     return typeFilterFormNode.value === dataElement.offer.type || typeFilterFormNode.value === VALUE_OF_ALL_ADS;
   };
@@ -48,22 +47,9 @@
   };
 
   var filterPinsByFeatures = function (dataElement) {
-    var isShowElement = true;
-
-    var checkedFeatures = featureFilterFormNodesArr.filter(function (elem) {
-      return elem.checked;
+    return !featureFilterFormNodesArr.some(function (elem) {
+      return elem.checked && !dataElement.offer.features.includes(elem.value);
     });
-
-    if (checkedFeatures.length) { // проверяем активна ли хоть одна фича
-      for (var i = 0; i < checkedFeatures.length; i++) { // цикл по активным фичам
-        if (!dataElement.offer.features.includes(checkedFeatures[i].value)) { // если хоть одна фича не входит в наше объявление, скрываем его
-          isShowElement = false;
-          break;
-        }
-      }
-    }
-
-    return isShowElement;
   };
 
 
@@ -71,12 +57,13 @@
     filterFormNode: filterFormNode,
 
     filterMapPins: function (data) {
-      return data.slice(0, MAX_PINS_ON_MAP).
+      return data.
       filter(filterPinsByType).
       filter(filterPinsByPrice).
       filter(filterPinsByRooms).
       filter(filterPinsByGuests).
-      filter(filterPinsByFeatures);
+      filter(filterPinsByFeatures).
+      slice(0, MAX_PINS_ON_MAP);
     }
   };
 

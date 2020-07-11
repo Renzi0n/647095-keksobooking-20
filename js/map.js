@@ -4,14 +4,8 @@
 
   var MAIN_PIN = {
     sizes: {
-      active: {
-        width: 200,
-        height: 200
-      },
-      inactive: {
-        width: 65,
-        height: 65
-      }
+      width: 65,
+      height: 65
     },
     coords: {
       x: '570px',
@@ -37,17 +31,17 @@
     MAP_SIZES: MAP_SIZES,
 
     getAddressMapPinMainStr: function () {
-      var сalculatedX = parseInt(mapPinMainNode.style.left, 10) + MAIN_PIN.sizes.active.width / 2;
-      var сalculatedHeight = window.util.isPageDisabled ? MAIN_PIN.sizes.active.height / 2 : MAIN_PIN.sizes.active.height;
-      var сalculatedY = parseInt(mapPinMainNode.style.top, 10) + сalculatedHeight;
+      var сalculatedX = mapPinMainNode.offsetLeft + MAIN_PIN.sizes.width / 2;
+      var сalculatedHeight = window.util.isPageDisabled ? MAIN_PIN.sizes.height / 2 : MAIN_PIN.sizes.height;
+      var сalculatedY = mapPinMainNode.offsetTop + сalculatedHeight;
 
       return Math.round(сalculatedX) + ', ' + Math.round(сalculatedY);
     },
     clearMap: function () {
       var mapPinsAdNodes = mapPinsNode.querySelectorAll('.map__pin:not(.map__pin--main)');
-      for (var i = 0; i < mapPinsAdNodes.length; i++) {
-        mapPinsAdNodes[i].remove();
-      }
+      mapPinsAdNodes.forEach(function (elem) {
+        elem.remove();
+      });
 
       if (window.pin.popupNode) {
         window.card.closePopup();

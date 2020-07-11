@@ -6,16 +6,17 @@
   var STATUS_CODES = {
     ok: 200
   };
+  var XHR_TIMEOUT = 10000;
 
   var setErrorListeners = function (xhr, onError) {
-    xhr.timeout = 10000;
+    xhr.timeout = XHR_TIMEOUT;
 
     xhr.addEventListener('error', function () {
-      onError(true);
+      onError('Произошла ошибка соединения', true);
     });
 
     xhr.addEventListener('timeout', function () {
-      onError(true);
+      onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс', true);
     });
   };
 
@@ -45,7 +46,7 @@
         if (xhr.status === STATUS_CODES.ok) {
           onLoad(false);
         } else {
-          onError(true);
+          onError('Cтатус ответа: ' + xhr.status + ' ' + xhr.statusText, true);
         }
       });
       setErrorListeners(xhr, onError);

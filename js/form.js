@@ -48,12 +48,15 @@
     }
   };
 
-  var onFormSubmit = function (isError) {
+  var onFormSubmit = function (message, isError) {
+    window.renderPopup(isError);
+
     if (!isError) {
       window.lockPage();
       window.map.mapNode.scrollIntoView({block: 'center', behavior: 'smooth'});
+    } else {
+      throw new Error(message);
     }
-    window.renderPopup(isError);
   };
 
 
