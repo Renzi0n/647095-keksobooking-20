@@ -104,8 +104,8 @@
 
     window.filter.filterFormNode.removeEventListener('change', window.onFilterFormNodeChange); // удаляем обработчик для фильтров
 
-    window.map.mapPinMainNode.addEventListener('mousedown', onMapPinMainNodeKeyDownEnter);
-    window.map.mapPinMainNode.addEventListener('keydown', onMapPinMainNodeMouseDownLeft);
+    window.map.mapPinMainNode.addEventListener('keydown', onMapPinMainNodeKeyDownEnter);
+    window.map.mapPinMainNode.addEventListener('mousedown', onMapPinMainNodeMouseDownLeft);
   };
 
 })();
