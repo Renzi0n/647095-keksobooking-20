@@ -1,5 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
+https://renzi0n.github.io/647095-keksobooking-20/
+
 * Студент: [Андрей Решетов](https://up.htmlacademy.ru/javascript/20/user/647095).
 * Наставник: [Никита Победоносцев](https://htmlacademy.ru/profile/id502263).
 
